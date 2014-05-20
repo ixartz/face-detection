@@ -5,4 +5,9 @@ file(GLOB source
      "*.cpp"
 )
 
+find_package(OpenCV REQUIRED)
+include_directories(SYSTEM ${OpenCV_INCLUDE_DIRS})
+
 add_executable(detection ${source})
+
+target_link_libraries(detection ${OpenCV_LIBS})
