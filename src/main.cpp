@@ -5,13 +5,20 @@ int main()
 {
     cv::VideoCapture capture(0);
     cv::Mat cameraFrame;
+    char key = 0;
 
-    capture.read(cameraFrame);
+    cv::namedWindow("Face detection", cv::WINDOW_AUTOSIZE);
 
-    cv::namedWindow("Display window", cv::WINDOW_AUTOSIZE);
-    cv::imshow("Face detection", cameraFrame);
+    while (key != 'q')
+    {
+        capture.read(cameraFrame);
+        cv::flip(cameraFrame, cameraFrame, 1);
+        cv::imshow("Face detection", cameraFrame);
 
-    cv::waitKey(0);
+        key = cvWaitKey(1000 / 30);
+    }
+
+    cv::destroyWindow("Face detection");
 
     return EXIT_SUCCESS;
 }
