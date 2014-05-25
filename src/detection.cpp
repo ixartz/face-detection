@@ -4,7 +4,7 @@ Detection::Detection()
   : color_face_(255, 0, 255)
   , color_eye_(255, 0, 0)
   , face_cascade_("../haarcascade/haarcascade_frontalface_alt.xml")
-  , eye_cascade_("../haarcascade/haarcascade_eye_tree_eyeglasses.xml")
+  , eye_cascade_("../haarcascade/haarcascade_eye.xml")
 {
 
 }
