@@ -3,8 +3,8 @@
 Detection::Detection()
   : color_face_(255, 0, 255)
   , color_eye_(255, 0, 0)
-  , face_cascade_("../haarcascade/haarcascade_frontalface_alt.xml")
-  , eye_cascade_("../haarcascade/haarcascade_eye.xml")
+  , face_cascade_(std::string(PROJECT_SRC_DIR) + "/haarcascade/haarcascade_frontalface_alt.xml")
+  , eye_cascade_(std::string(PROJECT_SRC_DIR) + "/haarcascade/haarcascade_eye.xml")
 {
 
 }

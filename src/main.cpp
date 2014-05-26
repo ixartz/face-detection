@@ -1,4 +1,5 @@
 #include "boost/filesystem.hpp"
+#include "Config.h"
 #include "camera.h"
 #include "detection.h"
 
@@ -6,11 +7,11 @@ int main(int argc, char* argv[])
 {
   Detection d;
 
-  if (argc > 1)
+  if (argc > 1 && std::string(argv[1]) == "test")
   {
     cv::Mat image;
-    std::string output_dir("../output/");
-    boost::filesystem::path dir(argv[1]);
+    std::string output_dir(std::string(PROJECT_SRC_DIR) + "/output/");
+    boost::filesystem::path dir(std::string(PROJECT_SRC_DIR) + "/input/");
     boost::filesystem::directory_iterator end;
 
     if (boost::filesystem::exists(dir)
