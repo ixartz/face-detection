@@ -7,14 +7,14 @@
 class Camera
 {
 public:
-  Camera();
-  ~Camera();
-  void process(Detection& d);
+    Camera();
+    ~Camera();
+    void process(Detection& d);
 
 protected:
-  cv::VideoCapture capture_;
-  cv::Mat camera_frame_;
-  char key_ = 0;
+    cv::VideoCapture capture_;
+    cv::Mat camera_frame_;
+    char key_ = 0;
 };
 
 #endif /* !CAMERA_H */
