@@ -31,3 +31,6 @@ add_executable(skin-detection ${source_skin})
 
 target_link_libraries(detection ${OpenCV_LIBS}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+
+target_link_libraries(skin-detection ${OpenCV_LIBS}
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
