@@ -49,7 +49,7 @@ int main()
     cv::Mat sample(1, 3, CV_32FC1);
     int res;
 
-    frame = cv::imread(std::string(PROJECT_SRC_DIR) + "/img_136.png", CV_LOAD_IMAGE_COLOR);
+    frame = cv::imread(std::string(PROJECT_SRC_DIR) + "/img_315.jpg", CV_LOAD_IMAGE_COLOR);
 
     for (int j = 0; j < frame.cols; ++j)
     {
@@ -63,56 +63,49 @@ int main()
 
             if (res == 1)
             {
-                frame.at<cv::Vec3b>(i, j)[0] = 255;
-                frame.at<cv::Vec3b>(i, j)[1] = 255;
-                frame.at<cv::Vec3b>(i, j)[2] = 255;
-            }
-            else
-            {
                 frame.at<cv::Vec3b>(i, j)[0] = 0;
                 frame.at<cv::Vec3b>(i, j)[1] = 0;
                 frame.at<cv::Vec3b>(i, j)[2] = 0;
             }
+            else
+            {
+                frame.at<cv::Vec3b>(i, j)[0] = 255;
+                frame.at<cv::Vec3b>(i, j)[1] = 255;
+                frame.at<cv::Vec3b>(i, j)[2] = 255;
+            }
         }
+    }
+
+    cv::Mat test;
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
+    cvtColor(frame,test, CV_RGB2GRAY);
+    cv::findContours( test, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0) );
+
+    /// Find the rotated rectangles and ellipses for each contour
+    std::vector<cv::RotatedRect> minRect( contours.size() );
+    std::vector<cv::RotatedRect> minEllipse( contours.size() );
+
+    for( size_t i = 0; i < contours.size(); i++ )
+    {
+        minRect[i] = minAreaRect( cv::Mat(contours[i]));
+        if( contours[i].size() > 5 )
+        { minEllipse[i] = cv::fitEllipse( cv::Mat(contours[i]) ); }
+    }
+
+    cv::RNG rng(12345);
+
+    cv::Mat drawing = cv::Mat::zeros( frame.size(), CV_8UC3 );
+    for(size_t i = 0; i< contours.size(); i++ )
+    {
+        cv::Scalar color = cv::Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+        drawContours( frame, contours, i, color, 1, 8, std::vector<cv::Vec4i>(), 0, cv::Point() );
+        cv::ellipse( frame, minEllipse[i], color, 2, 8 );
     }
 
     cv::imshow("Face detection", frame);
 
     cvWaitKey(0);
-
-    /*
-    cv::VideoCapture capture_(0);
-    cv::Mat camera_frame_;
-    char key_ = 0;
-    cv::Mat sample(1, 3, CV_32FC1);
-    int res;
-
-    cv::namedWindow("Face detection", cv::WINDOW_AUTOSIZE);
-
-    while (key_ != 'q')
-    {
-        capture_.read(camera_frame_);
-        //cv::flip(camera_frame_, camera_frame_, 1);
-
-        for (int j = 0; j < camera_frame_.cols; ++j)
-        {
-            for (int i = 0; i < camera_frame_.rows; ++i)
-            {
-                sample.at<float>(0, 0) = camera_frame_.at<cv::Vec3b>(i, j)[0];
-                sample.at<float>(0, 1) = camera_frame_.at<cv::Vec3b>(i, j)[1];
-                sample.at<float>(0, 2) = camera_frame_.at<cv::Vec3b>(i, j)[2];
-
-                res = classifier.predict(sample);
-
-                std::cout << res << std::endl;
-            }
-        }
-
-        cv::imshow("Face detection", camera_frame_);
-
-        key_ = cvWaitKey(10);
-    }
-    */
 
     return EXIT_SUCCESS;
 }
