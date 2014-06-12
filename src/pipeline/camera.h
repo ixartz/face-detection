@@ -14,6 +14,8 @@ public:
 protected:
     cv::VideoCapture capture_;
     cv::Mat camera_frame_;
+    cv::Size camera_size_;
+    cv::Mat camera_frame_resized_;
     char key_ = 0;
 };
 
