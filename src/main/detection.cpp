@@ -1,7 +1,6 @@
-#include "boost/filesystem.hpp"
-#include "Config.h"
 #include "../pipeline/camera.h"
 #include "../pipeline/detection.h"
+#include "../pipeline/folder-process.h"
 
 int main(int argc, char* argv[])
 {
@@ -9,29 +8,12 @@ int main(int argc, char* argv[])
 
     if (argc > 1 && std::string(argv[1]) == "test")
     {
-        cv::Mat image;
-        std::string output_dir(std::string(PROJECT_SRC_DIR) + "/output/");
-        boost::filesystem::path dir(std::string(PROJECT_SRC_DIR) + "/input/");
-        boost::filesystem::directory_iterator end;
-
-        if (boost::filesystem::exists(dir)
-            && boost::filesystem::is_directory(dir))
-        {
-            for (boost::filesystem::directory_iterator it(dir);
-                 it != end; ++it)
-            {
-                std::cout << it->path().filename() << std::endl;
-                image = cv::imread(it->path().string(), CV_LOAD_IMAGE_COLOR);
-
-                d.apply(image);
-                cv::imwrite(output_dir + it->path().filename().string(), image);
-            }
-        }
+        FolderProcess f(&d, "/input/", "/output/");
+        f.apply();
     }
     else
     {
         Camera c;
-
         c.process(d);
     }
 
