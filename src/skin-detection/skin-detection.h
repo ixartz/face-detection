@@ -12,9 +12,10 @@
 # include <iostream>
 # include <fstream>
 # include <opencv2/opencv.hpp>
+# include "../pipeline/filter.h"
 # include "Config.h"
 
-class SkinDetection
+class SkinDetection : public Filter
 {
 public:
     SkinDetection();

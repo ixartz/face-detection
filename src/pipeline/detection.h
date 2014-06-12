@@ -2,14 +2,15 @@
 # define DETECTION_H
 
 # include <opencv2/opencv.hpp>
+# include "filter.h"
 # include "../skin-detection/skin-detection.h"
 # include "Config.h"
 
-class Detection
+class Detection : public Filter
 {
 public:
     Detection();
-    void apply(cv::Mat& camera_frame);
+    void apply(cv::Mat& frame);
     bool have_skin(cv::Rect& face);
 
 protected:

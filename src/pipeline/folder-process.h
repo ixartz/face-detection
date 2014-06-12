@@ -7,17 +7,17 @@
 //
 
 #ifndef __face_detection__folder_process__
-#define __face_detection__folder_process__
+# define __face_detection__folder_process__
 
-#include <iostream>
-#include "Config.h"
-#include "boost/filesystem.hpp"
-#include "detection.h"
+# include <iostream>
+# include "Config.h"
+# include "boost/filesystem.hpp"
+# include "filter.h"
 
 class FolderProcess
 {
 public:
-    FolderProcess(Detection* d,
+    FolderProcess(Filter* d,
                   const std::string& in,
                   const std::string& out);
     void apply();
@@ -26,7 +26,7 @@ private:
     std::string project_src_;
     std::string output_dir_;
     boost::filesystem::path input_dir_;
-    Detection* d_;
+    Filter* d_;
 };
 
 #endif /* defined(__face_detection__folder_process__) */

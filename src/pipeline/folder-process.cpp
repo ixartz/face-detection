@@ -8,7 +8,7 @@
 
 #include "folder-process.h"
 
-FolderProcess::FolderProcess(Detection* d,
+FolderProcess::FolderProcess(Filter* d,
                              const std::string& in,
                              const std::string& out)
     : project_src_(std::string(PROJECT_SRC_DIR))
