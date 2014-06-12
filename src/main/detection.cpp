@@ -1,7 +1,7 @@
 #include "boost/filesystem.hpp"
 #include "Config.h"
-#include "camera.h"
-#include "detection.h"
+#include "../pipeline/camera.h"
+#include "../pipeline/detection.h"
 
 int main(int argc, char* argv[])
 {
