@@ -51,9 +51,9 @@ SkinDetection::SkinDetection()
 
 void SkinDetection::apply(cv::Mat& frame)
 {
-    for (int j = 0; j < frame.cols; ++j)
+    for (int i = 0; i < frame.rows; ++i)
     {
-        for (int i = 0; i < frame.rows; ++i)
+        for (int j = 0; j < frame.cols; ++j)
         {
             sample_.at<float>(0, 0) = frame.at<cv::Vec3b>(i, j)[0];
             sample_.at<float>(0, 1) = frame.at<cv::Vec3b>(i, j)[1];

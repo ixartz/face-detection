@@ -10,6 +10,7 @@ class Detection
 public:
     Detection();
     void apply(cv::Mat& camera_frame);
+    bool have_skin(cv::Rect& face);
 
 protected:
     cv::Mat gray_;

@@ -19,20 +19,34 @@ void Detection::apply(cv::Mat& frame)
                                    cv::Size(30, 30));
 
 
-    skin_detection_.apply(frame);
+    skin_detection_.apply(skin_);
 
     for (size_t i = 0; i < faces_.size(); ++i)
     {
-        cv::Point center(faces_[i].x + faces_[i].width * 0.5,
-                         faces_[i].y + faces_[i].height * 0.5);
-
-        if (frame.at<cv::Vec3b>(center.x, center.y)[0] == 0
-            && frame.at<cv::Vec3b>(center.x, center.y)[1] == 0
-            && frame.at<cv::Vec3b>(center.x, center.y)[2] == 0)
+        if (have_skin(faces_[i]))
         {
-            cv::ellipse(frame, center,
-                        cv::Size(faces_[i].width * 0.5, faces_[i].height * 0.5),
-                        0, 0, 360, color_face_, 4, 8, 0);
+            cv::rectangle(frame, cv::Point(faces_[i].x, faces_[i].y),
+                          cv::Point(faces_[i].x + faces_[i].width,
+                                    faces_[i].y + faces_[i].height),
+                          color_face_);
         }
     }
+}
+
+bool Detection::have_skin(cv::Rect& face)
+{
+    for (int i = face.y; i <= face.y + face.height; ++i)
+    {
+        for (int j = face.x; j <= face.x + face.width; ++j)
+        {
+            if (skin_.at<cv::Vec3b>(i, j)[0] == 0
+                && skin_.at<cv::Vec3b>(i, j)[1] == 0
+                && skin_.at<cv::Vec3b>(i, j)[2] == 0)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
