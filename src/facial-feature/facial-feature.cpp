@@ -7,3 +7,8 @@
 //
 
 #include "facial-feature.h"
+
+void FacialFeature::apply(cv::Mat& frame)
+{
+
+}

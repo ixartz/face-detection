@@ -1,6 +1,6 @@
 #include "../pipeline/camera.h"
 #include "../pipeline/detection.h"
-#include "../pipeline/folder-process.h"
+#include "../util/folder-process.h"
 
 int main(int argc, char* argv[])
 {

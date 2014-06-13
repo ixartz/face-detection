@@ -10,5 +10,12 @@
 #define __face_detection__facial_feature__
 
 #include <iostream>
+#include "../util/filter.h"
+
+class FacialFeature : public Filter
+{
+public:
+    void apply(cv::Mat& frame);
+};
 
 #endif /* defined(__face_detection__facial_feature__) */
