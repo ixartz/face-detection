@@ -19,11 +19,14 @@ class Haar :public Filter
 public:
     Haar(Camera* c);
     void apply(cv::Mat& frame);
+    int rectangle_sum(int x1, int y1, int x2, int y2);
 
 protected:
     Camera* c_;
     Integral i_;
     cv::Mat gray_;
+    int size_ = 24;
+    int step_ = 1;
 };
 
 #endif /* defined(__face_detection__haar__) */

@@ -19,6 +19,7 @@ class Integral : public Filter
 public:
     Integral(Camera* c);
     void apply(cv::Mat& frame);
+    cv::Mat& get_result();
 
 protected:
     Camera* c_;

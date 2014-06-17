@@ -36,3 +36,8 @@ void Integral::apply(cv::Mat& frame)
         }
     }
 }
+
+cv::Mat& Integral::get_result()
+{
+    return integral_;
+}
