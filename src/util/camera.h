@@ -2,14 +2,14 @@
 # define CAMERA_H
 
 # include <opencv2/opencv.hpp>
-# include "detection.h"
+# include "../util/filter.h"
 
 class Camera
 {
 public:
     Camera();
     ~Camera();
-    void process(Detection& d);
+    void process(Filter& d);
 
 protected:
     cv::VideoCapture capture_;

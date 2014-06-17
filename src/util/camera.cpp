@@ -18,7 +18,7 @@ Camera::~Camera()
     cv::destroyWindow("Face detection");
 }
 
-void Camera::process(Detection& d)
+void Camera::process(Filter& d)
 {
     while (key_ != 'q')
     {

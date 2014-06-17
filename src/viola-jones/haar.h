@@ -10,5 +10,11 @@
 #define __face_detection__haar__
 
 #include <iostream>
+#include "../util/filter.h"
+
+class Haar :public Filter
+{
+    void apply(cv::Mat& frame);
+};
 
 #endif /* defined(__face_detection__haar__) */

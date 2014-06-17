@@ -7,3 +7,8 @@
 //
 
 #include "haar.h"
+
+void Haar::apply(cv::Mat& frame)
+{
+
+}
