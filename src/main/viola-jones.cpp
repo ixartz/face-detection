@@ -4,9 +4,9 @@
 
 int main()
 {
-    Haar d;
-
     Camera c;
+    Haar d(&c);
+
     c.process(d);
 
     return EXIT_SUCCESS;
