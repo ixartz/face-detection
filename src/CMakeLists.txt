@@ -20,6 +20,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -pedantic -std=c++11")
 add_dir("pipeline" source_pipeline)
 add_dir("skin-detection" source_skin)
 add_dir("facial-feature" source_feature)
+add_dir("viola-jones" source_haar)
 add_dir("util" source_util)
 
 find_package(OpenCV REQUIRED)
@@ -34,6 +35,8 @@ add_executable(skin-detection main/skin-detection.cpp
                ${source_skin} ${source_util})
 add_executable(facial-feature main/facial-feature.cpp
                ${source_feature} ${source_util})
+add_executable(viola-jones main/viola-jones.cpp
+               ${source_haar} ${source_util})
 
 target_link_libraries(detection ${OpenCV_LIBS}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
@@ -42,4 +45,7 @@ target_link_libraries(skin-detection ${OpenCV_LIBS}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
 target_link_libraries(facial-feature ${OpenCV_LIBS}
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+
+target_link_libraries(viola-jones ${OpenCV_LIBS}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
