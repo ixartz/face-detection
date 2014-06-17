@@ -4,6 +4,6 @@
 int main()
 {
     FacialFeature d;
-    FolderProcess f(&d, "/input/", "/output/");
+    FolderProcess f(&d, "/jpg/", "/output/");
     f.apply();
 }

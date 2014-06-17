@@ -11,10 +11,14 @@
 
 #include <iostream>
 #include "../util/filter.h"
+#include "../util/ft.h"
+#include "../util/ft-data.h"
+#include "Config.h"
 
 class FacialFeature : public Filter
 {
 public:
+    FacialFeature();
     void apply(cv::Mat& frame);
 };
 
