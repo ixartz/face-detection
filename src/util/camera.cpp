@@ -33,3 +33,8 @@ void Camera::process(Filter& d)
         key_ = cvWaitKey(10);
     }
 }
+
+cv::Size& Camera::get_camera_size()
+{
+    return camera_size_;
+}

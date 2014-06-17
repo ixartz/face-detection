@@ -17,4 +17,5 @@ Haar::Haar(Camera* c)
 void Haar::apply(cv::Mat& frame)
 {
     cvtColor(frame, frame, CV_BGR2GRAY);
+    i_.apply(frame);
 }

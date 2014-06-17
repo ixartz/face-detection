@@ -10,6 +10,7 @@
 #define __face_detection__integral__
 
 #include <iostream>
+#include <opencv2/opencv.hpp>
 #include "../util/filter.h"
 #include "../util/camera.h"
 

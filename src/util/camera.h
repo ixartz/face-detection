@@ -10,6 +10,7 @@ public:
     Camera();
     ~Camera();
     void process(Filter& d);
+    cv::Size& get_camera_size();
 
 protected:
     cv::VideoCapture capture_;
