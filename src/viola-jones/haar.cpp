@@ -17,16 +17,28 @@ Haar::Haar(Camera* c)
 void Haar::apply(cv::Mat& frame)
 {
     cv::Rect r;
+    cv::Size s;
 
     cvtColor(frame, frame, CV_BGR2GRAY);
-    i_.apply(frame);
 
-    for (int i = 0; i < frame.rows - size_; i += step_)
+    for (float factor = 1; ; factor *= 1.25)
     {
-        for (int j = 0; j < frame.cols - size_; j += step_)
+        s = cv::Size(frame.cols / factor, frame.rows / factor);
+
+        if (size_ > s.width || size_ > s.height)
+            break;
+
+        p_.set_size(s);
+        p_.apply(frame);
+        frame = p_.get_result();
+        i_.apply(frame);
+
+        for (int i = 0; i < frame.rows - size_; i += step_)
         {
-            r = cv::Rect(j, i, size_, size_);
-            frame(r);
+            for (int j = 0; j < frame.cols - size_; j += step_)
+            {
+                r = cv::Rect(j, i, size_, size_);
+            }
         }
     }
 }

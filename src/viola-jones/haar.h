@@ -13,6 +13,7 @@
 #include "../util/filter.h"
 #include "../util/camera.h"
 #include "integral.h"
+#include "pyramid.h"
 
 class Haar :public Filter
 {
@@ -24,6 +25,7 @@ public:
 protected:
     Camera* c_;
     Integral i_;
+    Pyramid p_;
     cv::Mat gray_;
     int size_ = 24;
     int step_ = 1;
