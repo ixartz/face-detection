@@ -15,7 +15,12 @@
 class FtData
 {
 public:
-    void read(const cv::FileNode& node);
+    FtData(const std::string& filename);
+    void read();
+
+protected:
+    cv::FileStorage f_;
+    std::string filename_;
 };
 
 #endif /* defined(__face_detection__ft_data__) */

@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include "../util/filter.h"
-#include "../util/ft.h"
 #include "../util/ft-data.h"
 #include "Config.h"
 

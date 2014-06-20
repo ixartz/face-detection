@@ -12,8 +12,10 @@
 #include <iostream>
 #include "../util/filter.h"
 #include "../util/camera.h"
+#include "../util/ft-data.h"
 #include "integral.h"
 #include "pyramid.h"
+#include "Config.h"
 
 class Haar :public Filter
 {
@@ -29,6 +31,7 @@ protected:
     cv::Mat gray_;
     int size_ = 24;
     int step_ = 1;
+    FtData data_;
 };
 
 #endif /* defined(__face_detection__haar__) */

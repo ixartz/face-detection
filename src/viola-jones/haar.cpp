@@ -11,7 +11,11 @@
 Haar::Haar(Camera* c)
     : c_(c)
     , i_(c)
+    , data_(std::string(PROJECT_SRC_DIR)
+            + "/haarcascade/"
+            + "haarcascade_frontalface_default.xml")
 {
+    data_.read();
 }
 
 void Haar::apply(cv::Mat& frame)
