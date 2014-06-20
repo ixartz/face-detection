@@ -11,12 +11,15 @@
 
 # include <iostream>
 # include <opencv2/opencv.hpp>
+# include "../viola-jones/stage.h"
+
+class Haar;
 
 class FtData
 {
 public:
     FtData(const std::string& filename);
-    void read();
+    void read(Haar* h);
 
 protected:
     cv::FileStorage f_;

@@ -15,7 +15,7 @@ Haar::Haar(Camera* c)
             + "/haarcascade/"
             + "haarcascade_frontalface_default.xml")
 {
-    data_.read();
+    data_.read(this);
 }
 
 void Haar::apply(cv::Mat& frame)
@@ -55,4 +55,9 @@ int Haar::rectangle_sum(int x1, int y1, int x2, int y2)
     int d = i_.get_result().at<int>(x2, y2);
 
     return d + a - b - c;
+}
+
+std::vector<Stage>& Haar::get_stage_array()
+{
+    return stage_array_;
 }
