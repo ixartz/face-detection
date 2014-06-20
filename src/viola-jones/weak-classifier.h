@@ -15,14 +15,12 @@
 class WeakClassifier
 {
 public:
-    WeakClassifier(const cv::Point& p1,
-                   const cv::Point& p2,
+    WeakClassifier(float threshold,
                    float left_val,
                    float right_val);
 
 protected:
-    cv::Point p1_;
-    cv::Point p2_;
+    float threshold_;
     float left_val_;
     float right_val_;
 };
