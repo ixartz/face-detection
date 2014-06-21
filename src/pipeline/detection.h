@@ -2,6 +2,7 @@
 # define DETECTION_H
 
 # include <opencv2/opencv.hpp>
+# include <time.h>
 # include "../util/filter.h"
 # include "../skin-detection/skin-detection.h"
 # include "Config.h"

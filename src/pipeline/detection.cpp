@@ -5,7 +5,6 @@ Detection::Detection()
     , face_cascade_(std::string(PROJECT_SRC_DIR)
                     + "/haarcascade/haarcascade_frontalface_alt.xml")
 {
-
 }
 
 void Detection::apply(cv::Mat& frame)

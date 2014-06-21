@@ -10,6 +10,7 @@ Camera::Camera()
     camera_size_ = cv::Size(camera_frame_.cols / 2,
                             camera_frame_.rows / 2);
 
+    //CV_8UC3 = 8 bits + 3 channels
     camera_frame_resized_ = cv::Mat(camera_size_, CV_8UC3);
 }
 
@@ -20,6 +21,9 @@ Camera::~Camera()
 
 void Camera::process(Detection& d)
 {
+    clock_t init_timer = clock();
+    int nb_call = 0;
+    
     while (key_ != 'q')
     {
         capture_.read(camera_frame_);
@@ -30,6 +34,16 @@ void Camera::process(Detection& d)
 
         cv::imshow("Face detection", camera_frame_resized_);
 
-        key_ = cvWaitKey(10);
+        //count frame analized for each second
+        if (CLOCKS_PER_SEC >= clock() - init_timer){
+            ++nb_call;
+        }
+        else{
+            std::cout << nb_call << " fps" << std::endl;
+            nb_call = 1;
+            init_timer = clock();
+        }
+        
+        key_ = cvWaitKey(1);
     }
 }

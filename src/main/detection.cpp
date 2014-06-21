@@ -5,7 +5,7 @@
 int main(int argc, char* argv[])
 {
     Detection d;
-
+    
     if (argc > 1 && std::string(argv[1]) == "test")
     {
         FolderProcess f(&d, "/input/", "/output/");
