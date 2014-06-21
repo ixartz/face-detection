@@ -19,7 +19,7 @@ Camera::~Camera()
     cv::destroyWindow("Face detection");
 }
 
-void Camera::process(Detection& d)
+void Camera::process(Filter& d)
 {
     clock_t init_timer = clock();
     int nb_call = 0;
@@ -46,4 +46,9 @@ void Camera::process(Detection& d)
         
         key_ = cvWaitKey(1);
     }
+}
+
+cv::Size& Camera::get_camera_size()
+{
+    return camera_size_;
 }

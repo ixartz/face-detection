@@ -22,7 +22,7 @@ public:
                   const std::string& out);
     void apply();
 
-private:
+protected:
     std::string project_src_;
     std::string output_dir_;
     boost::filesystem::path input_dir_;

@@ -8,6 +8,11 @@
 
 #include "facial-feature.h"
 
+FacialFeature::FacialFeature()
+{
+
+}
+
 void FacialFeature::apply(cv::Mat& frame)
 {
 
