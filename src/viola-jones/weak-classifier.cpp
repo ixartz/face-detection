@@ -63,9 +63,9 @@ float WeakClassifier::calculate_value(cv::Mat& frame_integral,
 
 int WeakClassifier::rectangle_sum(cv::Mat i, int x1, int y1, int x2, int y2)
 {
-    int a = i.at<int>(x1 - 1, y1 - 1);
-    int b = i.at<int>(x2, y1 - 1);
-    int c = i.at<int>(x1 - 1, y2);
+    int a = i.at<int>(x1, y1);
+    int b = i.at<int>(x2, y1);
+    int c = i.at<int>(x1, y2);
     int d = i.at<int>(x2, y2);
 
     return d + a - b - c;

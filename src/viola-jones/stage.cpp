@@ -20,7 +20,7 @@ bool Stage::pass(cv::Mat& frame_integral,
                  int j,
                  int size)
 {
-    int sum = 0;
+    float sum = 0;
 
     for (auto it = weak_classifier_array_.begin();
          it != weak_classifier_array_.end();
@@ -29,7 +29,7 @@ bool Stage::pass(cv::Mat& frame_integral,
         sum += it->calculate_value(frame_integral, frame_squared, i, j, size);
     }
 
-    return false;
+    return sum > threshold_;
 }
 
 std::vector<WeakClassifier>& Stage::get_weak_classifier_array()
