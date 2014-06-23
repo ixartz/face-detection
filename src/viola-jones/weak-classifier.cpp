@@ -10,10 +10,12 @@
 
 WeakClassifier::WeakClassifier(float threshold,
                                float left_val,
-                               float right_val)
+                               float right_val,
+                               Feature* feature)
     : threshold_(threshold)
     , left_val_(left_val)
     , right_val_(right_val)
+    , feature_(feature)
 {
 
 }
