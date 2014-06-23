@@ -13,3 +13,8 @@ Stage::Stage(int nb_weak, float threshold)
     , threshold_(threshold)
 {
 }
+
+std::vector<WeakClassifier>& Stage::get_weak_classifier_array()
+{
+    return weak_classifier_array_;
+}
