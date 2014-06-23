@@ -21,6 +21,15 @@ public:
                    float right_val,
                    Feature* feature);
 
+    float calculate_value(cv::Mat& frame_integral,
+                          cv::Mat& frame_squared,
+                          int i,
+                          int j,
+                          int size);
+
+protected:
+    int rectangle_sum(cv::Mat i, int x1, int y1, int x2, int y2);
+
 protected:
     float threshold_;
     float left_val_;

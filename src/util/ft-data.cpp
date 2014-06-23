@@ -72,9 +72,14 @@ void FtData::read_rectangle(Feature& feature, cv::FileNodeIterator& it)
     {
         cv::FileNodeIterator it_rect = (cv::FileNodeIterator)(*it_e).begin();
 
-        Rectangle rect(cv::Point(*(it_rect), *(it_rect += 1)),
-                       cv::Point(*(it_rect += 1), *(it_rect += 1)),
-                       *(it_rect += 1));
+        cv::Point p1;
+        cv::Point p2;
+        p1.x = *(it_rect);
+        p1.y = *(it_rect += 1);
+        p2.x = *(it_rect += 1);
+        p2.y = *(it_rect += 1);
+
+        Rectangle rect(p1, p2, *(it_rect += 1));
 
         feature.get_rectangle_array().push_back(rect);
     }

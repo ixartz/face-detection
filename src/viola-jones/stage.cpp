@@ -14,6 +14,24 @@ Stage::Stage(int nb_weak, float threshold)
 {
 }
 
+bool Stage::pass(cv::Mat& frame_integral,
+                 cv::Mat& frame_squared,
+                 int i,
+                 int j,
+                 int size)
+{
+    int sum = 0;
+
+    for (auto it = weak_classifier_array_.begin();
+         it != weak_classifier_array_.end();
+         ++it)
+    {
+        sum += it->calculate_value(frame_integral, frame_squared, i, j, size);
+    }
+
+    return false;
+}
+
 std::vector<WeakClassifier>& Stage::get_weak_classifier_array()
 {
     return weak_classifier_array_;

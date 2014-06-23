@@ -15,3 +15,18 @@ Rectangle::Rectangle(const cv::Point& p1, const cv::Point& p2, float weight)
 {
 
 }
+
+cv::Point& Rectangle::get_p1()
+{
+    return p1_;
+}
+
+cv::Point& Rectangle::get_p2()
+{
+    return p2_;
+}
+
+float Rectangle::get_weight()
+{
+    return weight_;
+}

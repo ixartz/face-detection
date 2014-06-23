@@ -23,7 +23,6 @@ class Haar :public Filter
 public:
     Haar(Camera* c);
     void apply(cv::Mat& frame);
-    int rectangle_sum(int x1, int y1, int x2, int y2);
     std::vector<Stage>& get_stage_array();
 
 protected:

@@ -20,10 +20,12 @@ public:
     Integral(Camera* c);
     void apply(cv::Mat& frame);
     cv::Mat& get_result();
+    cv::Mat& get_result_squared();
 
 protected:
     Camera* c_;
     cv::Mat integral_;
+    cv::Mat integral_squared_;
 };
 
 #endif /* defined(__face_detection__integral__) */
