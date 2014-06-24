@@ -20,6 +20,7 @@ public:
     ImageProcess();
     ~ImageProcess();
     void process(Filter& d);
+    cv::Size get_size();
 
 protected:
     cv::Mat frame_;

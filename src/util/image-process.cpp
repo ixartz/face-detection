@@ -27,3 +27,8 @@ void ImageProcess::process(Filter& d)
 
     cvWaitKey(0);
 }
+
+cv::Size ImageProcess::get_size()
+{
+    return frame_.size();
+}

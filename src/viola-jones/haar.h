@@ -22,11 +22,12 @@ class Haar :public Filter
 {
 public:
     Haar(Camera* c);
+    Haar(cv::Size camera_size);
     void apply(cv::Mat& frame);
     std::vector<Stage>& get_stage_array();
 
 protected:
-    Camera* c_;
+    cv::Size camera_size_;
     Integral i_;
     Pyramid p_;
     cv::Mat gray_;

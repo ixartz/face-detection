@@ -9,9 +9,15 @@
 #include "integral.h"
 
 Integral::Integral(Camera* c)
-    : c_(c)
-    , integral_(c->get_camera_size(), CV_32SC1)
-    , integral_squared_(c->get_camera_size(), CV_64FC1)
+    : Integral(c->get_camera_size())
+{
+
+}
+
+Integral::Integral(cv::Size camera_size)
+    : camera_size_(camera_size)
+    , integral_(camera_size, CV_32SC1)
+    , integral_squared_(camera_size, CV_64FC1)
 {
 
 }

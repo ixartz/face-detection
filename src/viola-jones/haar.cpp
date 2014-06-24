@@ -9,8 +9,14 @@
 #include "haar.h"
 
 Haar::Haar(Camera* c)
-    : c_(c)
-    , i_(c)
+    : Haar(c->get_camera_size())
+{
+
+}
+
+Haar::Haar(cv::Size camera_size)
+    : camera_size_(camera_size)
+    , i_(camera_size)
     , data_(std::string(PROJECT_SRC_DIR)
             + "/haarcascade/"
             + "haarcascade_frontalface_default.xml")
