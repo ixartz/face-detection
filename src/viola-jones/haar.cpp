@@ -63,7 +63,8 @@ void Haar::apply(cv::Mat& frame)
                 {
                     cv::rectangle(frame,
                                   cv::Point(j * factor, i * factor),
-                                  cv::Point((j + size_) * factor, (i + size_) * factor),
+                                  cv::Point((j + size_) * factor,
+                                            (i + size_) * factor),
                                   cv::Scalar(255, 0, 255));
                 }
             }

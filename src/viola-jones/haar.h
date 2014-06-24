@@ -12,7 +12,7 @@
 #include <iostream>
 #include "../util/filter.h"
 #include "../util/camera.h"
-#include "../util/ft-data.h"
+#include "ft-data.h"
 #include "integral.h"
 #include "pyramid.h"
 #include "stage.h"
