@@ -8,7 +8,6 @@ int main()
     /*
     Camera c;
     Haar d(&c);
-
     c.process(d);
     */
 

@@ -18,8 +18,8 @@ public:
     Stage(int nb_weak, float threshold);
     bool pass(cv::Mat& frame_integral,
               cv::Mat& frame_squared,
-              int i,
               int j,
+              int i,
               int size);
     std::vector<WeakClassifier>& get_weak_classifier_array();
 

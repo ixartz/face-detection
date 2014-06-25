@@ -18,7 +18,7 @@ class Integral : public Filter
 {
 public:
     Integral(Camera* c);
-    Integral(cv::Size camera_size);
+    Integral(const cv::Size& camera_size);
     void apply(cv::Mat& frame);
     cv::Mat& get_result();
     cv::Mat& get_result_squared();

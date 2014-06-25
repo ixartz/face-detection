@@ -22,7 +22,7 @@ class Haar :public Filter
 {
 public:
     Haar(Camera* c);
-    Haar(cv::Size camera_size);
+    Haar(const cv::Size& camera_size);
     void apply(cv::Mat& frame);
     std::vector<Stage>& get_stage_array();
 

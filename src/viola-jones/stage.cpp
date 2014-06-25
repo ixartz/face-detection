@@ -16,8 +16,8 @@ Stage::Stage(int nb_weak, float threshold)
 
 bool Stage::pass(cv::Mat& frame_integral,
                  cv::Mat& frame_squared,
-                 int i,
                  int j,
+                 int i,
                  int size)
 {
     float sum = 0;

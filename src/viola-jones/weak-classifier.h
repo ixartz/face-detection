@@ -28,7 +28,8 @@ public:
                           int size);
 
 protected:
-    int rectangle_sum(cv::Mat i, int x1, int y1, int x2, int y2);
+    template <typename T>
+    T rectangle_sum(cv::Mat& i, int x1, int y1, int x2, int y2);
 
 protected:
     float threshold_;
@@ -36,5 +37,16 @@ protected:
     float right_val_;
     Feature* feature_;
 };
+
+template <typename T>
+T WeakClassifier::rectangle_sum(cv::Mat& i, int x1, int y1, int x2, int y2)
+{
+    T a = i.at<T>(y1, x1);
+    T b = i.at<T>(y1, x2);
+    T c = i.at<T>(y2, x1);
+    T d = i.at<T>(y2, x2);
+
+    return d + a - b - c;
+}
 
 #endif /* defined(__face_detection__weak_classifier__) */
