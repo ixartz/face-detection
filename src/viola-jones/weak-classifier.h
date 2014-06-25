@@ -23,8 +23,8 @@ public:
 
     float calculate_value(cv::Mat& frame_integral,
                           cv::Mat& frame_squared,
-                          int i,
                           int j,
+                          int i,
                           int size);
 
 protected:
@@ -41,10 +41,10 @@ protected:
 template <typename T>
 T WeakClassifier::rectangle_sum(cv::Mat& i, int x1, int y1, int x2, int y2)
 {
-    T a = i.at<T>(y1, x1);
-    T b = i.at<T>(y1, x2);
-    T c = i.at<T>(y2, x1);
-    T d = i.at<T>(y2, x2);
+    T a = i.at<T>(x1, y1);
+    T b = i.at<T>(x2, y1);
+    T c = i.at<T>(x1, y2);
+    T d = i.at<T>(x2, y2);
 
     return d + a - b - c;
 }

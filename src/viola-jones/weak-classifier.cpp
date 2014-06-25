@@ -22,14 +22,20 @@ WeakClassifier::WeakClassifier(float threshold,
 
 float WeakClassifier::calculate_value(cv::Mat& frame_integral,
                                       cv::Mat& frame_squared,
-                                      int i,
                                       int j,
+                                      int i,
                                       int size)
 {
-    float mean = (float)rectangle_sum<int>(frame_integral, i, j, i + size, j + size)
-                 / (float)(size * size);
-    float var = rectangle_sum<double>(frame_squared, i, j, i + size, j + size)
-                / (size * size) - mean * mean;
+    double inv_win_area = 1. / (size * size);
+    double mean = rectangle_sum<int>(frame_integral,
+                                     j,
+                                     i,
+                                     j + size,
+                                     i + size)
+                  * inv_win_area;
+
+    double var = rectangle_sum<double>(frame_squared, j, i, j + size, i + size)
+                 * inv_win_area - mean * mean;
 
     if (var >= 1.)
     {
@@ -40,22 +46,22 @@ float WeakClassifier::calculate_value(cv::Mat& frame_integral,
         var = 1.;
     }
 
-    float sum = 0;
+    int sum = 0;
 
     for (auto it = feature_->get_rectangle_array().begin();
          it != feature_->get_rectangle_array().end(); ++it)
     {
         sum += rectangle_sum<int>(frame_integral,
-                                  i + it->get_p1().x,
                                   j + it->get_p1().y,
-                                  i + it->get_p1().x + it->get_p2().x,
-                                  j + it->get_p1().y + it->get_p2().y)
+                                  i + it->get_p1().x,
+                                  j + it->get_p1().y + it->get_p2().y,
+                                  i + it->get_p1().x + it->get_p2().x)
                * it->get_weight();
     }
 
-    sum /= (size * size);
+    double sumf = sum * inv_win_area;
 
-    if (sum < threshold_ * var)
+    if (sumf < threshold_ * var)
         return left_val_;
     else
         return right_val_;

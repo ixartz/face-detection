@@ -59,7 +59,7 @@ void Haar::apply(cv::Mat& frame)
                      it != stage_array_.end();
                      ++it)
                 {
-                    if (!it->pass(frame_integral, frame_squared, i, j, size_))
+                    if (!it->pass(frame_integral, frame_squared, j, i, size_))
                     {
                         pass = false;
                         break;
