@@ -32,6 +32,7 @@ protected:
     cv::Mat frame_integral_;
     cv::Mat frame_squared_;
     cv::Size s_;
+    std::vector<cv::Rect> rect_list_;
 
     cv::Size camera_size_;
     Integral i_;

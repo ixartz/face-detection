@@ -52,10 +52,10 @@ float WeakClassifier::calculate_value(cv::Mat& frame_integral,
          it != feature_->get_rectangle_array().end(); ++it)
     {
         sum += rectangle_sum<int>(frame_integral,
-                                  j + it->get_p1().y,
-                                  i + it->get_p1().x,
-                                  j + it->get_p1().y + it->get_p2().y,
-                                  i + it->get_p1().x + it->get_p2().x)
+                                  j + it->get_p1().x,
+                                  i + it->get_p1().y,
+                                  j + it->get_p1().x + it->get_p2().x,
+                                  i + it->get_p1().y + it->get_p2().y)
                * it->get_weight();
     }
 

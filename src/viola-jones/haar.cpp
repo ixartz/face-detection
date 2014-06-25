@@ -47,6 +47,7 @@ void Haar::apply(cv::Mat& frame)
         {
             for (int j = 0; j < frame_resized_.cols - size_; j += step_)
             {
+                /* img.at<uchar>(i, j); */
                 pass = true;
 
                 for (auto it = stage_array_.begin();

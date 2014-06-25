@@ -26,7 +26,7 @@ bool Stage::pass(cv::Mat& frame_integral,
          it != weak_classifier_array_.end();
          ++it)
     {
-        sum += it->calculate_value(frame_integral, frame_squared, i, j, size);
+        sum += it->calculate_value(frame_integral, frame_squared, j, i, size);
     }
 
     return sum > threshold_;
