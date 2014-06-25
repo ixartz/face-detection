@@ -20,6 +20,7 @@ public:
     Integral(Camera* c);
     Integral(const cv::Size& camera_size);
     void apply(cv::Mat& frame);
+    void apply(cv::Mat& frame, cv::Mat& integral, cv::Mat& integral_squared);
     cv::Mat& get_result();
     cv::Mat& get_result_squared();
 

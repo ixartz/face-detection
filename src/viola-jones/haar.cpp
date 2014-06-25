@@ -15,7 +15,9 @@ Haar::Haar(Camera* c)
 }
 
 Haar::Haar(const cv::Size& camera_size)
-    : camera_size_(camera_size)
+    : frame_integral_(camera_size, CV_32SC1)
+    , frame_squared_(camera_size, CV_64FC1)
+    , camera_size_(camera_size)
     , i_(camera_size)
     , data_(std::string(PROJECT_SRC_DIR)
             + "/haarcascade/"
@@ -26,32 +28,24 @@ Haar::Haar(const cv::Size& camera_size)
 
 void Haar::apply(cv::Mat& frame)
 {
-    cv::Rect r;
-    cv::Size s;
-    cv::Mat frame_gray;
-    cv::Mat frame_resized;
-    cv::Mat frame_integral;
-    cv::Mat frame_squared;
-    cvtColor(frame, frame_gray, CV_BGR2GRAY);
+    cvtColor(frame, frame_gray_, CV_BGR2GRAY);
     bool pass;
 
     for (float factor = 1; ; factor *= 1.25)
     {
-        s = cv::Size(frame_gray.cols / factor, frame_gray.rows / factor);
+        s_.width = frame_gray_.cols / factor;
+        s_.height = frame_gray_.rows / factor;
 
-        if (size_ > s.width || size_ > s.height)
+        if (size_ > s_.width || size_ > s_.height)
             break;
 
-        p_.set_size(s);
-        p_.apply(frame_gray);
-        frame_resized = p_.get_result();
-        i_.apply(frame_resized);
-        frame_integral = i_.get_result();
-        frame_squared = i_.get_result_squared();
+        p_.set_size(s_);
+        p_.apply(frame_gray_, frame_resized_);
+        i_.apply(frame_resized_, frame_integral_, frame_squared_);
 
-        for (int i = 0; i < frame_resized.rows - size_; i += step_)
+        for (int i = 0; i < frame_resized_.rows - size_; i += step_)
         {
-            for (int j = 0; j < frame_resized.cols - size_; j += step_)
+            for (int j = 0; j < frame_resized_.cols - size_; j += step_)
             {
                 pass = true;
 
@@ -59,7 +53,7 @@ void Haar::apply(cv::Mat& frame)
                      it != stage_array_.end();
                      ++it)
                 {
-                    if (!it->pass(frame_integral, frame_squared, j, i, size_))
+                    if (!it->pass(frame_integral_, frame_squared_, j, i, size_))
                     {
                         pass = false;
                         break;

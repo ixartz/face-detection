@@ -24,6 +24,13 @@ Integral::Integral(const cv::Size& camera_size)
 
 void Integral::apply(cv::Mat& frame)
 {
+    apply(frame, integral_, integral_squared_);
+}
+
+void Integral::apply(cv::Mat& frame,
+                     cv::Mat& integral,
+                     cv::Mat& integral_squared)
+{
     int sum = 0;
     double sum_2 = 0;
 
@@ -32,8 +39,8 @@ void Integral::apply(cv::Mat& frame)
         sum += frame.at<uchar>(0, j);
         sum_2 += frame.at<uchar>(0, j) * frame.at<uchar>(0, j);
 
-        integral_.at<int>(0, j) = sum;
-        integral_squared_.at<double>(0, j) = sum_2;
+        integral.at<int>(0, j) = sum;
+        integral_squared.at<double>(0, j) = sum_2;
     }
 
     for (int i = 1; i < frame.rows; ++i)
@@ -45,9 +52,9 @@ void Integral::apply(cv::Mat& frame)
         {
             sum += frame.at<uchar>(i, j);
             sum_2 += frame.at<uchar>(i, j) * frame.at<uchar>(i, j);
-            integral_.at<int>(i, j) = sum + integral_.at<int>(i-1, j);
-            integral_squared_.at<double>(i, j) = sum_2 +
-                                           integral_squared_.at<double>(i-1, j);
+            integral.at<int>(i, j) = sum + integral.at<int>(i-1, j);
+            integral_squared.at<double>(i, j) = sum_2 +
+                                            integral_squared.at<double>(i-1, j);
         }
     }
 }

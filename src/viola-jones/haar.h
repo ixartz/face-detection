@@ -27,10 +27,15 @@ public:
     std::vector<Stage>& get_stage_array();
 
 protected:
+    cv::Mat frame_gray_;
+    cv::Mat frame_resized_;
+    cv::Mat frame_integral_;
+    cv::Mat frame_squared_;
+    cv::Size s_;
+
     cv::Size camera_size_;
     Integral i_;
     Pyramid p_;
-    cv::Mat gray_;
     int size_ = 24;
     int step_ = 1;
     FtData data_;
