@@ -27,12 +27,18 @@ public:
     std::vector<Stage>& get_stage_array();
 
 protected:
+    void merge(cv::Mat& frame);
+
+protected:
     cv::Mat frame_gray_;
     cv::Mat frame_resized_;
     cv::Mat frame_integral_;
     cv::Mat frame_squared_;
     cv::Size s_;
     std::vector<cv::Rect> rect_list_;
+    std::vector<int> labels_;
+    std::vector<cv::Rect> rrects_;
+    std::vector<int> rweights_;
 
     cv::Size camera_size_;
     Integral i_;
