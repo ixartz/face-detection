@@ -22,4 +22,10 @@ protected:
     std::vector<Rectangle> rectangle_array_;
 };
 
+inline std::vector<Rectangle>&
+Feature::get_rectangle_array()
+{
+    return rectangle_array_;
+}
+
 #endif /* defined(__face_detection__feature__) */

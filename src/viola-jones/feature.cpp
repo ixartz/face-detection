@@ -7,8 +7,3 @@
 //
 
 #include "feature.h"
-
-std::vector<Rectangle>& Feature::get_rectangle_array()
-{
-    return rectangle_array_;
-}

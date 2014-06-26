@@ -49,4 +49,10 @@ protected:
     std::vector<Stage> stage_array_;
 };
 
+inline std::vector<Stage>&
+Haar::get_stage_array()
+{
+    return stage_array_;
+}
+
 #endif /* defined(__face_detection__haar__) */
