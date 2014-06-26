@@ -11,16 +11,15 @@
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include "rectangle.h"
 
 class Feature
 {
 public:
-    Feature(cv::Point& p1, cv::Point& p2, float weight);
+    std::vector<Rectangle>& get_rectangle_array();
 
 protected:
-    cv::Point p1_;
-    cv::Point p2_;
-    float weight_;
+    std::vector<Rectangle> rectangle_array_;
 };
 
 #endif /* defined(__face_detection__feature__) */

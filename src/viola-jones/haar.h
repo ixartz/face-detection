@@ -12,7 +12,7 @@
 #include <iostream>
 #include "../util/filter.h"
 #include "../util/camera.h"
-#include "../util/ft-data.h"
+#include "ft-data.h"
 #include "integral.h"
 #include "pyramid.h"
 #include "stage.h"
@@ -22,15 +22,27 @@ class Haar :public Filter
 {
 public:
     Haar(Camera* c);
+    Haar(const cv::Size& camera_size);
     void apply(cv::Mat& frame);
-    int rectangle_sum(int x1, int y1, int x2, int y2);
     std::vector<Stage>& get_stage_array();
 
 protected:
-    Camera* c_;
+    void merge(cv::Mat& frame);
+
+protected:
+    cv::Mat frame_gray_;
+    cv::Mat frame_resized_;
+    cv::Mat frame_integral_;
+    cv::Mat frame_squared_;
+    cv::Size s_;
+    std::vector<cv::Rect> rect_list_;
+    std::vector<int> labels_;
+    std::vector<cv::Rect> rrects_;
+    std::vector<int> rweights_;
+
+    cv::Size camera_size_;
     Integral i_;
     Pyramid p_;
-    cv::Mat gray_;
     int size_ = 24;
     int step_ = 1;
     FtData data_;

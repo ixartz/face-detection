@@ -17,6 +17,7 @@ class Pyramid : public Filter
 {
 public:
     void apply(cv::Mat& frame);
+    void apply(cv::Mat& frame, cv::Mat& dst);
     void set_size(cv::Size& size);
     cv::Mat& get_result();
 
