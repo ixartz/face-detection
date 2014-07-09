@@ -33,7 +33,7 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 add_executable(detection main/detection.cpp
                ${source_pipeline} ${source_skin} ${source_util})
 add_executable(adaboost main/adaboost.cpp
-               ${source_adaboost})
+               ${source_adaboost} ${source_util})
 add_executable(skin-detection main/skin-detection.cpp
                ${source_skin} ${source_util})
 add_executable(facial-feature main/facial-feature.cpp
