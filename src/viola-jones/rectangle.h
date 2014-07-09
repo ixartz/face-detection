@@ -16,8 +16,8 @@ class Rectangle
 {
 public:
     Rectangle(const cv::Point& p1, const cv::Point& p2, float weight);
-    cv::Point& get_p1();
-    cv::Point& get_p2();
+    const cv::Point& get_p1() const;
+    const cv::Point& get_p2() const;
     float get_weight();
 
 protected:
@@ -25,5 +25,23 @@ protected:
     cv::Point p2_;
     float weight_;
 };
+
+inline const cv::Point&
+Rectangle::get_p1() const
+{
+    return p1_;
+}
+
+inline const cv::Point&
+Rectangle::get_p2() const
+{
+    return p2_;
+}
+
+inline float
+Rectangle::get_weight()
+{
+    return weight_;
+}
 
 #endif /* defined(__face_detection__rectangle__) */

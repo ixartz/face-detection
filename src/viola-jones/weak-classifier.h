@@ -39,7 +39,8 @@ protected:
 };
 
 template <typename T>
-T WeakClassifier::rectangle_sum(cv::Mat& i, int x1, int y1, int x2, int y2)
+inline T
+WeakClassifier::rectangle_sum(cv::Mat& i, int x1, int y1, int x2, int y2)
 {
     /* img.at<uchar>(y, x); */
     T a = i.at<T>(y1, x1);

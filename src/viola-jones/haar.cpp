@@ -119,8 +119,3 @@ void Haar::merge(cv::Mat& frame)
     rrects_.clear();
     rweights_.clear();
 }
-
-std::vector<Stage>& Haar::get_stage_array()
-{
-    return stage_array_;
-}

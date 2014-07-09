@@ -22,11 +22,6 @@ Integral::Integral(const cv::Size& camera_size)
 
 }
 
-void Integral::apply(cv::Mat& frame)
-{
-    apply(frame, integral_, integral_squared_);
-}
-
 void Integral::apply(cv::Mat& frame,
                      cv::Mat& integral,
                      cv::Mat& integral_squared)
@@ -57,14 +52,4 @@ void Integral::apply(cv::Mat& frame,
                                             integral_squared.at<double>(i-1, j);
         }
     }
-}
-
-cv::Mat& Integral::get_result()
-{
-    return integral_;
-}
-
-cv::Mat& Integral::get_result_squared()
-{
-    return integral_squared_;
 }

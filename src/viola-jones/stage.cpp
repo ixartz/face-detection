@@ -31,8 +31,3 @@ bool Stage::pass(cv::Mat& frame_integral,
 
     return sum > threshold_;
 }
-
-std::vector<WeakClassifier>& Stage::get_weak_classifier_array()
-{
-    return weak_classifier_array_;
-}
