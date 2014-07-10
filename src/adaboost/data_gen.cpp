@@ -43,19 +43,58 @@ void apply_filter(cv::Mat& m, cv::Mat& filter){
     int bottom_border = floorf(filter.rows / 2.);
     int left_border = ceilf(filter.cols / 2. - 1);
     int right_border = floorf(filter.cols / 2.);
-    cv::Mat m_filtered;
 
-//  add 0 borders
-    cv::copyMakeBorder(m, m_filtered, top_border, bottom_border,
-                       left_border, right_border, cv::BORDER_CONSTANT, 0);
+    cv::Mat m_filtered(m.rows + top_border + bottom_border,
+                       m.cols + left_border + right_border, CV_64FC1);
 
-
-    for (int k = 0; k < m.rows; ++k){
-        for (int j = 0; j < m.cols; ++j){
+//  add 0 borders to apply filter
+//  cv::copyMakeBorder does not work with left/right border else we could use
+//  cv::copyMakeBorder(m, m_filtered, top_border, bottom_border,
+//                     left_border, right_border, cv::BORDER_CONSTANT, 0);
+//  top
+    for (int i = 0; i < top_border; ++i){
+        for (int j = 0; j < m_filtered.cols; ++j){
+            m_filtered.at<float>(i, j) = 0;
         }
     }
 
-    //std::cout << m << std::endl;
+    for (int i = 0; i < m.rows; ++i) {
+//      left
+        for (int j = 0; j < left_border; ++j) {
+            m_filtered.at<float>(i + top_border, j) = 0;
+        }
+        for (int j = 0; j < m.cols; ++j) {
+            m_filtered.at<float>(i + top_border, j + left_border) = m.at<float>(i, j);
+        }
+//      right
+        for (int j = m_filtered.cols - right_border; j < m_filtered.cols; ++j) {
+            m_filtered.at<float>(i + top_border, j) = 0;
+        }
+    }
+
+//  bottom
+    for (int i = m_filtered.rows - bottom_border; i < m_filtered.rows; ++i){
+        for (int j = 0; j < m_filtered.cols; ++j){
+            m_filtered.at<float>(i, j) = 0;
+        }
+    }
+
+//    std::cout << "matrix before filter" << std::endl;
+//    print_matrix<float>(m_filtered);
+
+    for (int i = 0; i < m.rows; ++i){
+        for (int j = 0; j < m.cols; ++j){
+            //for each pixels
+            float pixel_val = 0;
+            //apply_filter
+            for (int k = 0; k < filter.rows; ++k){
+                for (int l = 0; l < filter.cols; ++l){
+                    pixel_val += filter.at<float>(k, l) * m_filtered.at<float>(i + k, j + l);
+                }
+            }
+            m.at<float>(i, j) = pixel_val;
+        }
+    }
 }
 
 float mean_vector(cv::Mat& m){
@@ -171,52 +210,31 @@ std::vector<float>* data_gen(cv::Mat& classifier){
     int i = 0;
     for (std::string facefile : *facefiles){
         cv::Mat im = cv::imread(facefile, cv::IMREAD_GRAYSCALE);
-        //cv::filter2D(im2, im2, 0, classifier);
-
-        //        if (facefile.compare(std::string(PROJECT_SRC_DIR) + "/face/1.pgm") == 0){
-        //            cv::Mat im2(im.rows, im.cols, CV_64FC1);
-        //            std::cout << im << std::endl;
-        //            //cv::filter2D(im, im2, 0, classifier);
-        //            print_matrix<float>(classifier);
-        //            std::cout << "im2" << std::endl;
-        //            std::cout << im2 << std::endl;
-        //        }
 
         //      FIXME perf : equalized after resize ?
         //      im=histeq(im); im=mat2gray(im); division par 255
         cv::Mat* im_equalized = histeq(im);
 
         //      im=imresize(im,[24 24]);
-        cv::Mat im_data_resize(24, 24, CV_64FC1);
-        cv::resize(*im_equalized, im_data_resize,
-                   cv::Size(im_data_resize.rows, im_data_resize.cols));
+
+//      si jamais on devait avoir des images différentes de 24x24
+//      il faudrait resize, néanmoins cette fonction a un soucis
+//      d'accès concurrent créant des NaN donc il faudrait la refaire
+//      cv::resize(*im_equalized, im_data_resize, cv::Size(24, 24));
+
+//      im=(im-mean(mean(im)))./(var(im(:)));
+        mean_var(*im_equalized);
+
+//      you must be thinking that why we are using this step. We told you that
+//      we will be using integral images for that. okay, we will develop the
+//      workaround. no worries!!
+//      im=imfilter(im,A,'same');
+        apply_filter(*im_equalized, classifier);
+        
+//      face_data(i,1)=mean(mean(im));
+        (*data)[i * 3] = mean_vector(*im_equalized);
 
         delete im_equalized;
-
-        //      im=(im-mean(mean(im)))./(var(im(:)));
-        mean_var(im_data_resize);
-
-        //      you must be thinking that why we are using this step. We told you that
-        //      we will be using integral images for that. okay, we will develop the
-        //      workaround. no worries!!
-        //      im=imfilter(im,A,'same');
-        apply_filter(im_data_resize, classifier);
-
-        //cv::filter2D(im_data_resize, im_data_resize, 0, classifier);
-        //        if (facefile.compare(std::string(PROJECT_SRC_DIR) + "/face/1.pgm") == 0){
-        //            cv::Mat m_test(im.rows, im.cols, CV_64FC1);
-        //            for (int k = 0; k < im.rows; ++k){
-        //                for (int j = 0; j < im.cols; ++j){
-        //                    m_test.at<float>(k, j) = im.at<uchar>(k, j) / 255.;
-        //                }
-        //            }
-        //            mean_var(m_test);
-        //            std::cout << "mean_var" << std::endl;
-        //            print_matrix<float>(m_test);
-        //        }
-        
-        //      face_data(i,1)=mean(mean(im));
-        (*data)[i * 3] = mean_vector(im_data_resize);
         
         ++i;
     }

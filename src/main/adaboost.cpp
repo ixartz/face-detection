@@ -41,22 +41,48 @@ int main(){
 //  Init Haar classifiers - A
     std::vector<cv::Mat> classifiers;
     
-    cv::Mat test(6, 3, CV_64FC1);
-    for (int i = 0; i < test.rows; ++i) {
-        for (int j = 0; j < test.cols; ++j) {
+    cv::Mat haar1(6, 3, CV_64FC1);
+    for (int i = 0; i < haar1.rows; ++i) {
+        for (int j = 0; j < haar1.cols; ++j) {
             if (i < 3){
-                test.at<float>(i, j) = -1;
+                haar1.at<float>(i, j) = -1;
             }
             else{
-                test.at<float>(i, j) = 1;
+                haar1.at<float>(i, j) = 1;
             }
         }
     }
 
-//  FIXME code to remove
-    for (int i = 0; i < 1; ++i)
-        classifiers.push_back(test);
-    
+    classifiers.push_back(haar1);
+
+    cv::Mat haar2(6, 6, CV_64FC1);
+    for (int i = 0; i < haar2.rows; ++i) {
+        for (int j = 0; j < haar2.cols; ++j) {
+            if (i < 3){
+                haar2.at<float>(i, j) = -1;
+            }
+            else{
+                haar2.at<float>(i, j) = 1;
+            }
+        }
+    }
+
+    classifiers.push_back(haar2);
+
+    cv::Mat haar3(6, 9, CV_64FC1);
+    for (int i = 0; i < haar3.rows; ++i) {
+        for (int j = 0; j < haar3.cols; ++j) {
+            if (i < 3){
+                haar3.at<float>(i, j) = -1;
+            }
+            else{
+                haar3.at<float>(i, j) = 1;
+            }
+        }
+    }
+
+    classifiers.push_back(haar3);
+
 //  1st step Initialisation
     
 //  weights are initialized.
