@@ -38,9 +38,24 @@ std::vector<std::string>* get_files(std::string input_dir,
 }
 
 // FIXME
-cv::Mat* apply_filter(cv::Mat& m, cv::Mat& filter){
-    cv::Mat* m_filtered = new cv::Mat(m);
-    return m_filtered;
+void apply_filter(cv::Mat& m, cv::Mat& filter){
+    int top_border = ceilf(filter.rows / 2. - 1);
+    int bottom_border = floorf(filter.rows / 2.);
+    int left_border = ceilf(filter.cols / 2. - 1);
+    int right_border = floorf(filter.cols / 2.);
+    cv::Mat m_filtered;
+
+//  add 0 borders
+    cv::copyMakeBorder(m, m_filtered, top_border, bottom_border,
+                       left_border, right_border, cv::BORDER_CONSTANT, 0);
+
+
+    for (int k = 0; k < m.rows; ++k){
+        for (int j = 0; j < m.cols; ++j){
+        }
+    }
+
+    //std::cout << m << std::endl;
 }
 
 float mean_vector(cv::Mat& m){
@@ -185,7 +200,7 @@ std::vector<float>* data_gen(cv::Mat& classifier){
         //      we will be using integral images for that. okay, we will develop the
         //      workaround. no worries!!
         //      im=imfilter(im,A,'same');
-        cv::Mat* im_filtered = apply_filter(im_data_resize, classifier);
+        apply_filter(im_data_resize, classifier);
 
         //cv::filter2D(im_data_resize, im_data_resize, 0, classifier);
         //        if (facefile.compare(std::string(PROJECT_SRC_DIR) + "/face/1.pgm") == 0){
@@ -201,8 +216,7 @@ std::vector<float>* data_gen(cv::Mat& classifier){
         //        }
         
         //      face_data(i,1)=mean(mean(im));
-        (*data)[i * 3] = mean_vector(*im_filtered);
-        delete im_filtered;
+        (*data)[i * 3] = mean_vector(im_data_resize);
         
         ++i;
     }
