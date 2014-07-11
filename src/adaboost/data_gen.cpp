@@ -37,7 +37,6 @@ std::vector<std::string>* get_files(std::string input_dir,
     return filenames;
 }
 
-// FIXME
 void apply_filter(cv::Mat& m, cv::Mat& filter){
     int top_border = ceilf(filter.rows / 2. - 1);
     int bottom_border = floorf(filter.rows / 2.);
@@ -78,9 +77,6 @@ void apply_filter(cv::Mat& m, cv::Mat& filter){
             m_filtered.at<float>(i, j) = 0;
         }
     }
-
-//    std::cout << "matrix before filter" << std::endl;
-//    print_matrix<float>(m_filtered);
 
     for (int i = 0; i < m.rows; ++i){
         for (int j = 0; j < m.cols; ++j){
@@ -140,7 +136,7 @@ void mean_var(cv::Mat& m){
     }
 }
 
-// FIXME perf : parrallel
+// FIXME perf : to parrallelise
 cv::Mat* histeq(cv::Mat& m){
     std::vector<float> pixel_counter(256, 0);
     for (int k = 0; k < m.rows; ++k){
@@ -166,34 +162,29 @@ cv::Mat* histeq(cv::Mat& m){
         }
     }
 
-    //print_matrix<float>(*m_histeq);
     return m_histeq;
 }
 
 std::vector<float>* data_gen(cv::Mat& classifier){
     std::vector<float>* data = new std::vector<float>();
 
-    //  data generation.
-    //  facefiles=dir('face/*.pgm');
+//  data generation.
     std::vector<std::string>*
     facefiles = get_files(std::string(PROJECT_SRC_DIR) + "/face", ".pgm");
 
-    //  nonfacefiles=dir('nonface/*.png');
     std::vector<std::string>*
     nonfacefiles = get_files(std::string(PROJECT_SRC_DIR) + "/nonface", ".png");
 
-    //  FIXME : 3 ou nb_boucles ?
     int l = facefiles->size() * 3;
     int m = nonfacefiles->size() * 3;
     data->reserve(l + m);
 
-    //  face_data=ones(length(facefiles),3);
+//  positive datas have 1 in third column;
     for (int i = 0; i < l; ++i){
         data->push_back(1);
     }
 
-    //  nonface_data=ones(length(nonfacefiles),3);
-    //  nonface_data(:,3)=-1.*ones(length(nonface_data),1);
+//  negative datas have -1 in third column;
     for (int i = l; i < l + m; ++i){
         if (i % 3 == 2){
             data->push_back(-1);
@@ -206,32 +197,28 @@ std::vector<float>* data_gen(cv::Mat& classifier){
     facefiles->insert(facefiles->end(), nonfacefiles->begin(),
                       nonfacefiles->end());
 
-    //  for i=1:length(facefiles); for i=1:length(facefiles)
     int i = 0;
     for (std::string facefile : *facefiles){
         cv::Mat im = cv::imread(facefile, cv::IMREAD_GRAYSCALE);
 
-        //      FIXME perf : equalized after resize ?
-        //      im=histeq(im); im=mat2gray(im); division par 255
+//      FIXME perf : equalized after resize ?
+//      value / 255 + histogram equalization
         cv::Mat* im_equalized = histeq(im);
 
-        //      im=imresize(im,[24 24]);
+//      FIXME :
+//      If one day we want to have training images with different size
+//      than 24x24 pixels, we would have to resize. However cv::resize
+//      does not work correctly (inserting NaN values randomly probably
+//      because of thread concurrency) even with images of 24x24, so we
+//      have to reimplement it
 
-//      si jamais on devait avoir des images différentes de 24x24
-//      il faudrait resize, néanmoins cette fonction a un soucis
-//      d'accès concurrent créant des NaN donc il faudrait la refaire
-//      cv::resize(*im_equalized, im_data_resize, cv::Size(24, 24));
-
-//      im=(im-mean(mean(im)))./(var(im(:)));
+//      im = (im-mean(im))/var(im);
         mean_var(*im_equalized);
 
-//      you must be thinking that why we are using this step. We told you that
-//      we will be using integral images for that. okay, we will develop the
-//      workaround. no worries!!
-//      im=imfilter(im,A,'same');
+//      FIXME perf : try to use integral images
         apply_filter(*im_equalized, classifier);
         
-//      face_data(i,1)=mean(mean(im));
+//      data(i,1)=mean(im);
         (*data)[i * 3] = mean_vector(*im_equalized);
 
         delete im_equalized;
