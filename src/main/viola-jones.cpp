@@ -4,23 +4,20 @@
 #include "../util/image-process.h"
 #include "../viola-jones/haar.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-    Camera c;
-    Haar d(&c);
-    c.process(d);
-
-    /*
-    ImageProcess img;
-    Haar d(img.get_size());
-    img.process(d);
-    */
-
-    /*
     Haar d(cv::Size(999999, 999999));
-    FolderProcess f(&d, "/input/", "/output/");
-    f.apply();
-    */
+
+    if (argc > 1 && std::string(argv[1]) == "test")
+    {
+        FolderProcess f(&d, "/input/", "/output/");
+        f.apply();
+    }
+    else
+    {
+        Camera c;
+        c.process(d);
+    }
 
     return EXIT_SUCCESS;
 }
