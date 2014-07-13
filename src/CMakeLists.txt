@@ -26,9 +26,11 @@ add_dir("adaboost" source_adaboost)
 
 find_package(OpenCV REQUIRED)
 find_package(Boost COMPONENTS system filesystem REQUIRED)
+find_package(TBB REQUIRED)
 
 include_directories(SYSTEM ${OpenCV_INCLUDE_DIRS})
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
+include_directories(${TBB_INCLUDE_DIRS})
 
 add_executable(detection main/detection.cpp
                ${source_pipeline} ${source_skin} ${source_util})
@@ -41,17 +43,17 @@ add_executable(facial-feature main/facial-feature.cpp
 add_executable(viola-jones main/viola-jones.cpp
                ${source_haar} ${source_util})
 
-target_link_libraries(detection ${OpenCV_LIBS}
+target_link_libraries(detection ${OpenCV_LIBS} ${TBB_LIBRARIES}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
-target_link_libraries(adaboost ${OpenCV_LIBS}
+target_link_libraries(adaboost ${OpenCV_LIBS} ${TBB_LIBRARIES}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
-target_link_libraries(skin-detection ${OpenCV_LIBS}
+target_link_libraries(skin-detection ${OpenCV_LIBS} ${TBB_LIBRARIES}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
-target_link_libraries(facial-feature ${OpenCV_LIBS}
+target_link_libraries(facial-feature ${OpenCV_LIBS} ${TBB_LIBRARIES}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
-target_link_libraries(viola-jones ${OpenCV_LIBS}
+target_link_libraries(viola-jones ${OpenCV_LIBS} ${TBB_LIBRARIES}
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})

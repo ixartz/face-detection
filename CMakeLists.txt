@@ -12,6 +12,7 @@ configure_file (
   "${PROJECT_BINARY_DIR}/Config.h")
 
 include_directories("${PROJECT_BINARY_DIR}")
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 add_subdirectory(src)

@@ -23,7 +23,8 @@ void Camera::process(Filter& d)
 {
     clock_t init_timer = clock();
     int nb_call = 0;
-    
+    tbb::concurrent_queue<cv::Mat> queue;
+
     while (key_ != 'q')
     {
         capture_.read(camera_frame_);
@@ -35,16 +36,18 @@ void Camera::process(Filter& d)
         cv::imshow("Face detection", camera_frame_resized_);
 
         //count frame analized for each second
-        if (CLOCKS_PER_SEC >= clock() - init_timer){
+        if (CLOCKS_PER_SEC >= clock() - init_timer)
+        {
             ++nb_call;
         }
-        else{
+        else
+        {
             std::cout << nb_call << " fps" << std::endl;
             nb_call = 1;
             init_timer = clock();
         }
-        
-        key_ = cvWaitKey(1);
+
+        key_ = cvWaitKey(10);
     }
 }
 

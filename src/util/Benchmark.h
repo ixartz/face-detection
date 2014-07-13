@@ -11,19 +11,22 @@
 
 #include <iostream>
 
-class Benchmark{
+class Benchmark
+{
 public:
-    Benchmark()
-    :init_(clock())
-    {}
+    Benchmark();
 
-    clock_t get_init(){
-        return init_;
-    };
+    clock_t get_init();
 private:
     clock_t init_;
 };
 
-std::ostream& operator<< (std::ostream& o, Benchmark& bench);
+inline clock_t
+Benchmark::get_init()
+{
+    return init_;
+}
+
+std::ostream& operator<<(std::ostream& o, Benchmark& bench);
 
 #endif /* defined(__face_detection__Benchmark__) */

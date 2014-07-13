@@ -8,7 +8,13 @@
 
 #include "Benchmark.h"
 
-std::ostream& operator<< (std::ostream& o, Benchmark& bench){
+Benchmark::Benchmark()
+    : init_(clock())
+{
+}
+
+std::ostream& operator<<(std::ostream& o, Benchmark& bench)
+{
     double seconds = (clock() - bench.get_init()) / (double)CLOCKS_PER_SEC;
     int hours = seconds / 3600;
     int minutes = seconds / 60 - hours * 60;

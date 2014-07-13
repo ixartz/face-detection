@@ -2,6 +2,7 @@
 # define CAMERA_H
 
 # include <opencv2/opencv.hpp>
+# include <tbb/concurrent_queue.h>
 # include "../util/filter.h"
 
 class Camera
