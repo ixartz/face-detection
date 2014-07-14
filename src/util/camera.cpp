@@ -21,34 +21,45 @@ Camera::~Camera()
 
 void Camera::process(Filter& d)
 {
-    clock_t init_timer = clock();
-    int nb_call = 0;
-    tbb::concurrent_queue<cv::Mat> queue;
+    tbb::parallel_pipeline(4,
+        tbb::make_filter<void, Camera*>(
+            tbb::filter::serial_in_order,
+            [this](tbb::flow_control& fc)
+            {
+                capture_.read(camera_frame_);
 
-    while (key_ != 'q')
-    {
-        capture_.read(camera_frame_);
-        //cv::flip(camera_frame_, camera_frame_, 1);
+                key_ = cvWaitKey(10);
 
-        cv::resize(camera_frame_, camera_frame_resized_, camera_size_);
-        d.apply(camera_frame_resized_);
+                if (key_ == 'q')
+                {
+                    fc.stop();
+                }
 
-        cv::imshow("Face detection", camera_frame_resized_);
-
-        //count frame analized for each second
-        if (CLOCKS_PER_SEC >= clock() - init_timer)
-        {
-            ++nb_call;
-        }
-        else
-        {
-            std::cout << nb_call << " fps" << std::endl;
-            nb_call = 1;
-            init_timer = clock();
-        }
-
-        key_ = cvWaitKey(10);
-    }
+                return this;
+            }) &
+        tbb::make_filter<Camera*, Camera*>(
+            tbb::filter::parallel,
+            [](Camera* c)
+            {
+                cv::resize(c->camera_frame_,
+                           c->camera_frame_resized_,
+                           c->camera_size_);
+                return c;
+            }) &
+        tbb::make_filter<Camera*, Camera*>(
+            tbb::filter::serial_in_order,
+            [&d](Camera* c)
+            {
+                d.apply(c->camera_frame_resized_);
+                return c;
+            }) &
+        tbb::make_filter<Camera*,void>(
+            tbb::filter::serial_in_order,
+            [](Camera* c)
+            {
+                cv::imshow("Face detection", c->camera_frame_resized_);
+            })
+    );
 }
 
 cv::Size& Camera::get_camera_size()
