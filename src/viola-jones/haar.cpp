@@ -8,14 +8,9 @@
 
 #include "haar.h"
 
-Haar::Haar(Camera* c)
-    : Haar(c->get_camera_size())
-{
-
-}
-
-Haar::Haar(const cv::Size& camera_size)
-    : frame_integral_(camera_size, CV_32SC1)
+Haar::Haar(const cv::Size& camera_size, tbb::task_scheduler_init& init)
+    : init_(init)
+    , frame_integral_(camera_size, CV_32SC1)
     , frame_squared_(camera_size, CV_64FC1)
     , camera_size_(camera_size)
     , i_(camera_size)
@@ -43,33 +38,45 @@ void Haar::apply(cv::Mat& frame)
         p_.apply(frame_gray_, frame_resized_);
         i_.apply(frame_resized_, frame_integral_, frame_squared_);
 
-        for (int i = 0; i < frame_resized_.rows - size_; i += step_)
-        {
-            for (int j = 0; j < frame_resized_.cols - size_; j += step_)
-            {
-                /* img.at<uchar>(i, j); */
-                pass = true;
+        tbb::parallel_for(
+             tbb::blocked_range2d<int>(0, frame_resized_.rows - size_,
+                                       frame_resized_.rows - size_,
+                                       0, frame_resized_.cols - size_,
+                                       frame_resized_.cols - size_
+                                       / init_.default_num_threads()),
+             [&](const tbb::blocked_range2d<int>& r)
+             {
+                 for (int i = r.rows().begin(); i != r.rows().end(); i += step_)
+                 {
+                     for (int j = r.cols().begin();
+                          j != r.cols().end(); j += step_)
+                     {
+                         /* img.at<uchar>(i, j); */
+                         pass = true;
 
-                for (auto it = stage_array_.begin();
-                     it != stage_array_.end();
-                     ++it)
-                {
-                    if (!it->pass(frame_integral_, frame_squared_, j, i, size_))
-                    {
-                        pass = false;
-                        break;
-                    }
-                }
+                         for (auto it = stage_array_.begin();
+                              it != stage_array_.end();
+                              ++it)
+                         {
+                             if (!it->pass(frame_integral_, frame_squared_,
+                                           j, i, size_))
+                             {
+                                 pass = false;
+                                 break;
+                             }
+                         }
 
-                if (pass)
-                {
-                    rect_list_.push_back(cv::Rect(j * factor,
-                                                  i * factor,
-                                                  size_ * factor,
-                                                  size_ * factor));
-                }
-            }
-        }
+                         if (pass)
+                         {
+                             rect_list_.push_back(cv::Rect(j * factor,
+                                                           i * factor,
+                                                           size_ * factor,
+                                                           size_ * factor));
+                         }
+                     }
+                 }
+             }
+        );
     }
 
     merge(frame);
@@ -79,7 +86,10 @@ void Haar::merge(cv::Mat& frame)
 {
     size_t i;
     float s;
-    int nb_classes = partition(rect_list_, labels_, cv::SimilarRects(0.2));
+    int nb_classes = partition(std::vector<cv::Rect>(rect_list_.begin(),
+                                                     rect_list_.end()),
+                               labels_,
+                               cv::SimilarRects(0.2));
     rrects_.resize(nb_classes);
     rweights_.resize(nb_classes, 0);
 

@@ -8,7 +8,7 @@ function(add_dir directory return)
     set(group "root")
   else()
     set(group ${directory})
-  ENDIF()
+  endif()
 
   source_group(${group} FILES ${source})
 

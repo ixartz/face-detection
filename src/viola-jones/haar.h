@@ -10,6 +10,10 @@
 #define __face_detection__haar__
 
 #include <iostream>
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range2d.h>
+#include <tbb/task_scheduler_init.h>
+#include <tbb/concurrent_vector.h>
 #include "../util/filter.h"
 #include "../util/camera.h"
 #include "ft-data.h"
@@ -21,8 +25,7 @@
 class Haar :public Filter
 {
 public:
-    Haar(Camera* c);
-    Haar(const cv::Size& camera_size);
+    Haar(const cv::Size& camera_size, tbb::task_scheduler_init& init);
     void apply(cv::Mat& frame);
     std::vector<Stage>& get_stage_array();
 
@@ -30,12 +33,13 @@ protected:
     void merge(cv::Mat& frame);
 
 protected:
+    tbb::task_scheduler_init& init_;
     cv::Mat frame_gray_;
     cv::Mat frame_resized_;
     cv::Mat frame_integral_;
     cv::Mat frame_squared_;
     cv::Size s_;
-    std::vector<cv::Rect> rect_list_;
+    tbb::concurrent_vector<cv::Rect> rect_list_;
     std::vector<int> labels_;
     std::vector<cv::Rect> rrects_;
     std::vector<int> rweights_;

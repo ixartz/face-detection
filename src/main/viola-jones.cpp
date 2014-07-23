@@ -1,4 +1,5 @@
 #include <iostream>
+#include <tbb/task_scheduler_init.h>
 #include "../util/camera.h"
 #include "../util/folder-process.h"
 #include "../util/image-process.h"
@@ -6,7 +7,8 @@
 
 int main(int argc, char* argv[])
 {
-    Haar d(cv::Size(999999, 999999));
+    tbb::task_scheduler_init init;
+    Haar d(cv::Size(999999, 999999), init);
 
     if (argc > 1 && std::string(argv[1]) == "test")
     {
