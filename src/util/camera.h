@@ -11,6 +11,8 @@ public:
     Camera();
     ~Camera();
     void process(Filter& d);
+    void process(std::vector<Filter*>& d);
+    tbb::filter_t<Camera*, Camera*> make_filter(Filter* f);
     cv::Size& get_camera_size();
 
 protected:

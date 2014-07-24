@@ -19,10 +19,8 @@ public:
     void apply(cv::Mat& frame);
     void apply(cv::Mat& frame, cv::Mat& dst);
     void set_size(cv::Size& size);
-    const cv::Mat& get_result() const;
 
 private:
-    cv::Mat result_;
     cv::Size size_;
 };
 
@@ -42,12 +40,6 @@ inline void
 Pyramid::set_size(cv::Size& size)
 {
     size_ = size;
-}
-
-inline const cv::Mat&
-Pyramid::get_result() const
-{
-    return result_;
 }
 
 #endif /* defined(__face_detection__pyramid__) */

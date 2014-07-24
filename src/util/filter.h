@@ -15,7 +15,19 @@
 class Filter
 {
 public:
+    Filter();
+    Filter(const cv::Size& size, int type);
     virtual void apply(cv::Mat& frame) = 0;
+    const cv::Mat& get_result() const;
+
+protected:
+    cv::Mat result_;
 };
+
+inline const cv::Mat&
+Filter::get_result() const
+{
+    return result_;
+}
 
 #endif /* defined(__face_detection__filter__) */

@@ -15,8 +15,8 @@ Integral::Integral(Camera* c)
 }
 
 Integral::Integral(const cv::Size& camera_size)
-    : camera_size_(camera_size)
-    , integral_(camera_size, CV_32SC1)
+    : Filter(camera_size, CV_32SC1)
+    , camera_size_(camera_size)
     , integral_squared_(camera_size, CV_64FC1)
 {
 

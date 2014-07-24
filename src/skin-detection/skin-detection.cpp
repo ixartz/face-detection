@@ -51,6 +51,10 @@ SkinDetection::SkinDetection()
 
 void SkinDetection::apply(cv::Mat& frame)
 {
+    // We cannot directly work with "frame" matrix due to the classifier which
+    // will work on "frame". So, we need a temporary matrix called skin.
+    cv::Mat skin(cv::Size(frame.cols, frame.rows), frame.type());
+
     for (int i = 0; i < frame.rows; ++i)
     {
         for (int j = 0; j < frame.cols; ++j)
@@ -63,16 +67,18 @@ void SkinDetection::apply(cv::Mat& frame)
 
             if (res_ == 1)
             {
-                frame.at<cv::Vec3b>(i, j)[0] = 0;
-                frame.at<cv::Vec3b>(i, j)[1] = 0;
-                frame.at<cv::Vec3b>(i, j)[2] = 0;
+                skin.at<cv::Vec3b>(i, j)[0] = 0;
+                skin.at<cv::Vec3b>(i, j)[1] = 0;
+                skin.at<cv::Vec3b>(i, j)[2] = 0;
             }
             else
             {
-                frame.at<cv::Vec3b>(i, j)[0] = 255;
-                frame.at<cv::Vec3b>(i, j)[1] = 255;
-                frame.at<cv::Vec3b>(i, j)[2] = 255;
+                skin.at<cv::Vec3b>(i, j)[0] = 255;
+                skin.at<cv::Vec3b>(i, j)[1] = 255;
+                skin.at<cv::Vec3b>(i, j)[2] = 255;
             }
         }
     }
+
+    frame = skin;
 }

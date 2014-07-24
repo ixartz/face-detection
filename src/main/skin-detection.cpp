@@ -1,13 +1,15 @@
 #include <iostream>
 #include "../skin-detection/skin-detection.h"
 #include "../util/image-process.h"
+#include "../util/camera.h"
 #include "Config.h"
 
 int main()
 {
     SkinDetection d;
-    ImageProcess img;
-    img.process(d);
+
+    Camera c;
+    c.process(d);
 
     return EXIT_SUCCESS;
 }

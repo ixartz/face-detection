@@ -22,7 +22,7 @@ public:
 
 protected:
     cv::Point p1_;
-    cv::Point p2_;
+    cv::Point p2_; // p2 is the rectangle size
     float weight_;
 };
 

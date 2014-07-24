@@ -22,7 +22,7 @@
 #include "stage.h"
 #include "Config.h"
 
-class Haar :public Filter
+class Haar : public Filter
 {
 public:
     Haar(const cv::Size& camera_size, tbb::task_scheduler_init& init);

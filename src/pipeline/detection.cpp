@@ -17,7 +17,6 @@ void Detection::apply(cv::Mat& frame)
                                    0 | CV_HAAR_SCALE_IMAGE,
                                    cv::Size(30, 30));
 
-
     skin_detection_.apply(skin_);
 
     for (size_t i = 0; i < faces_.size(); ++i)

@@ -7,3 +7,14 @@
 //
 
 #include "filter.h"
+
+Filter::Filter()
+{
+
+}
+
+Filter::Filter(const cv::Size& size, int type)
+    : result_(size, type)
+{
+
+}
