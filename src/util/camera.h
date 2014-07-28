@@ -3,6 +3,7 @@
 
 # include <opencv2/opencv.hpp>
 # include <tbb/pipeline.h>
+# include <tbb/tick_count.h>
 # include "../util/filter.h"
 
 class Camera
@@ -17,6 +18,7 @@ public:
 
 protected:
     cv::VideoCapture capture_;
+    cv::VideoWriter writer_;
     cv::Mat camera_frame_;
     cv::Mat camera_frame_resized_;
     cv::Size camera_size_;

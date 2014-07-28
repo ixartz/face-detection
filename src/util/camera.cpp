@@ -10,6 +10,14 @@ Camera::Camera()
     camera_size_ = cv::Size(camera_frame_.cols / 2,
                             camera_frame_.rows / 2);
 
+    /*
+    writer_ = cv::VideoWriter("out.avi",
+                              CV_FOURCC('D','I','V','X'),
+                              capture_.get(CV_CAP_PROP_FPS),
+                              camera_frame_.size(),
+                              true);
+    */
+
     //CV_8UC3 = 8 bits + 3 channels
     camera_frame_resized_ = cv::Mat(camera_size_, CV_8UC3);
 }
@@ -51,12 +59,17 @@ void Camera::process(std::vector<Filter*>& d)
         f = f & make_filter(*it);
     }
 
-    tbb::parallel_pipeline(4,
+    tbb::tick_count t0 = tbb::tick_count::now();
+
+    tbb::parallel_pipeline(12,
         tbb::make_filter<void, Camera*>(
             tbb::filter::serial_in_order,
             [this](tbb::flow_control& fc)
             {
-                capture_.read(camera_frame_);
+                if (!capture_.read(camera_frame_))
+                {
+                    fc.stop();
+                }
 
                 key_ = cvWaitKey(10);
 
@@ -83,8 +96,13 @@ void Camera::process(std::vector<Filter*>& d)
             [](Camera* c)
             {
                 cv::imshow("Face detection", c->camera_frame_resized_);
+                //c->writer_.write(c->camera_frame_);
             })
     );
+
+    tbb::tick_count t1 = tbb::tick_count::now();
+
+    std::cout << (t1 - t0).seconds() << "s" << std::endl;
 }
 
 cv::Size& Camera::get_camera_size()
